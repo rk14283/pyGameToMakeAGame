@@ -40,6 +40,14 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        #if event.type == pygame.MOUSEMOTION:
+        #you can also use MOUSEBUTTONUP and MOUSEBUTTONDOWN
+        #MOUSEUP is only triggered when you release the button
+        #there is a lot of this stuff in pygame docs  
+       # if event.type == pygame.MOUSEMOTION:
+        #    if player_rect.collidepoint(event.pos):print('collision')
+            #you get coordinates from here 
+            #print (event.pos)      
     #draw all our elements 
     #update everything
     #one surface on another  
@@ -64,6 +72,18 @@ while True:
     if snail_rect.right <=0: snail_rect.left = 800
     screen.blit(player_surf,(player_rect))
     
+    #when there is collision it prints true otherwise false 
+   #print (player_rect.colliderect(snail_rect)) 
+    #if (player_rect.colliderect(snail_rect)):
+        #remember collision is trigger multiple times, this will cause problems if there is a heart system
+        #print('collision')
+    
+    #player_rect.collidepoint(x,y)
+  #  mouse_pos = pygame.mouse.get_pos()
+  #  if player_rect.collidepoint(mouse_pos):
+        #you get 3 booleans left,right,middle and when pressed then it is true
+   #     print(pygame.mouse.get_pressed())  
+           
     pygame.display.update()
     #if clock.tick is updated to 1 or 600 it will be very slow or fast respectively
     clock.tick(60)
@@ -97,3 +117,6 @@ while True:
  #surface for image information, placement via rectangle, so you split image into two variables, and these are combined in sprite class 
  
  #collisions with rectangles can be done with rect1.colliderect(rect2)
+ #collidepoint using mouse
+ #getting the mouse: pygame.mouse, event loop
+ 
