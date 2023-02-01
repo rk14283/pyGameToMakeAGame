@@ -18,8 +18,8 @@ test_font = pygame.font.Font('images/Pixeltype.ttf', 50)
 #.convert() allows pygame to work with images more easily
 sky_surface = pygame.image.load(('images/Sky.png')).convert()
 ground_surface = pygame.image.load('images/ground.png').convert()
-#arguments are text, antialiasins, and color
-text_surface =test_font.render('My Game',False,'Black')
+#arguments are text, antialiasins, and color(in form of rgb)
+score_surf =test_font.render('My Game',False,(64,64,64))
 #convert alpha removes alpha values, the black and white values 
 snail_surf = pygame.image.load('images/snail1.png').convert_alpha()
 player_surf = pygame.image.load('images/player_walk_1.png').convert_alpha()
@@ -32,6 +32,9 @@ player_surf = pygame.image.load('images/player_walk_1.png').convert_alpha()
 #sprite class combines surface and rectangle and it makes it much easier to work with them 
 player_rect= player_surf.get_rect(midbottom =(80,300))
 snail_rect = snail_surf.get_rect(bottomright=(600,300))
+score_rect = score_surf.get_rect(center =(400,50))
+#player_gravity = 0
+player_gravity = -20
 #snail prototype 
 #test_surface = pygame.Surface((400,100))
 #test_surface.fill('Red')
@@ -40,12 +43,21 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        
+        if event.type ==pygame.KEYDOWN:
+            #print('key down')
+            if event.key == pygame.K_SPACE:
+                player_gravity = -20
+       # if event.type == pygame.KEYUP:
+           # print('key up')        
+            
         #if event.type == pygame.MOUSEMOTION:
         #you can also use MOUSEBUTTONUP and MOUSEBUTTONDOWN
         #MOUSEUP is only triggered when you release the button
         #there is a lot of this stuff in pygame docs  
-       # if event.type == pygame.MOUSEMOTION:
-        #    if player_rect.collidepoint(event.pos):print('collision')
+        if event.type == pygame.MOUSEMOTION:
+            if player_rect.collidepoint(event.pos):
+                player_gravity = -20
             #you get coordinates from here 
             #print (event.pos)      
     #draw all our elements 
@@ -57,7 +69,14 @@ while True:
     #always remember to draw the background otherwise you will draw previous frames which will look strange 
     screen.blit(sky_surface,(0,0))
     screen.blit(ground_surface,(0,300))
-    screen.blit(text_surface,(300,50))
+    pygame.draw.rect(screen,'#c0e8ec', score_rect)
+    pygame.draw.rect(screen,'#c0e8ec', score_rect,10)
+   # pygame.draw.line(screen,'Gold',(0,0),(800,400),10)
+   #VERY COOL, like god of war 
+    #pygame.draw.line(screen,'Gold',(0,0),pygame.mouse.get_pos(),10)
+    #getting a circle
+    pygame.draw.ellipse(screen,'Brown',pygame.Rect(50,200,100,100))
+    screen.blit(score_surf,score_rect)
     #everytime we run the loop snail_x_position increases by 1
     #+=1 moves to right, -=1 moves to left 
     #if statement stops the snail from moving outside the screen
@@ -72,6 +91,15 @@ while True:
     if snail_rect.right <=0: snail_rect.left = 800
     screen.blit(player_surf,(player_rect))
     
+    player_gravity +=1 
+    player_rect.y +=player_gravity
+    #it does a parabola when I do this 
+    #player_rect.y -=player_gravity
+    screen.blit(player_surf,player_rect)
+   # keys = pygame.key.get_pressed()
+    #if keys[pygame.K_SPACE]:
+     #   print('jump')
+     
     #when there is collision it prints true otherwise false 
    #print (player_rect.colliderect(snail_rect)) 
     #if (player_rect.colliderect(snail_rect)):
